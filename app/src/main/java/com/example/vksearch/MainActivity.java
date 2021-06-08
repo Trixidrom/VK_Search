@@ -2,15 +2,19 @@ package com.example.vksearch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.net.URL;
 
 import static com.example.vksearch.utils.NetworkUtils.generateURL;
+import static com.example.vksearch.utils.NetworkUtils.getResponseFromURL;
 
 public class MainActivity extends AppCompatActivity {
     private EditText searchField;
@@ -18,6 +22,29 @@ public class MainActivity extends AppCompatActivity {
     private TextView result;
 
     public static final String YS = "167";
+
+    class VKQueryTask extends AsyncTask<URL, Void, String>{
+
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            String response = null;
+
+            try {
+                response = getResponseFromURL(urls[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            result.setText(response);
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -36,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (view.getId()==R.id.et_search_field && searchField.getText().toString().equals("пользователь")){
                     searchField.setText("");
-                    //searchField.setTextColor(999);
+                    searchField.setTextColor(Color.parseColor("#000000"));
                 }
                 if(view.getId() == R.id.b_go){
                     URL generatedURL = generateURL( searchField.getText().toString(), YS);
-                    result.setText(generatedURL.toString());
+
+                    new VKQueryTask().execute(generatedURL);
+
                 }
             }
         };
