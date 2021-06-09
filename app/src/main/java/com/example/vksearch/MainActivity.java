@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.vksearch.utils.NetworkUtils.generateURL;
 import static com.example.vksearch.utils.NetworkUtils.getResponseFromURL;
@@ -29,42 +31,47 @@ public class MainActivity extends AppCompatActivity {
     private TextView result;
 
     public static final String YS = "167";
+    public static final String KORSAKOV = "6984";
 
-    class VKQueryTask extends AsyncTask<URL, Void, String>{
+    class VKQueryTask extends AsyncTask<URL, Void, List<String>>{
 
 
         @Override
-        protected String doInBackground(URL... urls) {
-            String response = null;
-
-            try {
-                response = getResponseFromURL(urls[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
+        protected List<String> doInBackground(URL... urls) {
+            List<String> response = new ArrayList();
+            for(int i = 0; i< urls.length; i++){
+                try {
+                    response.add(getResponseFromURL(urls[i]));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             return response;
         }
 
         @Override
-        protected void onPostExecute(String response) {
+        protected void onPostExecute(List<String> response) {
             String str ="";
-            try {
-                //сократили респонс до нужного массива
-                JSONArray jsonResponseArray = new JSONObject(response).getJSONObject("response").getJSONArray("items");
-                
-                for(int i = 0; i<jsonResponseArray.length(); i++){
-                    JSONSerialize SerObj= new Handler(jsonResponseArray.getJSONObject(i)).getSerObj();
-                    str+= "Имя: " + SerObj.getFirstName() + "\n" +
-                            "Фамилия: " +SerObj.getLastName() + "\n" +
-                            "ID: " + SerObj.getId() + "\n" +
-                            "Город: " + SerObj.getCity() + "\n\n";
-                }
+            for(int i = 0; i< response.size(); i++){
+                try {
+                    //сократили респонс до нужного массива
+                    JSONArray jsonResponseArray = new JSONObject(response.get(i))
+                            .getJSONObject("response").getJSONArray("items");
 
-                response = jsonResponseArray.toString();
-                
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    for(int f = 0; f<jsonResponseArray.length(); f++){
+                        JSONSerialize SerObj= new Handler(jsonResponseArray.getJSONObject(f)).getSerObj();
+                        str+= "Имя: " + SerObj.getFirstName() + "\n" +
+                                "Фамилия: " +SerObj.getLastName() + "\n" +
+                                "ID: " + SerObj.getId() + "\n" +
+                                "Город: " + SerObj.getCity() + "\n\n";
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+
             result.setText(str);
         }
     }
@@ -91,9 +98,12 @@ public class MainActivity extends AppCompatActivity {
                     searchField.setTextColor(Color.parseColor("#000000"));
                 }
                 if(view.getId() == R.id.b_go){
+                    URL[] asdf = new URL[2];
                     URL generatedURL = generateURL( searchField.getText().toString(), YS);
-
-                    new VKQueryTask().execute(generatedURL);
+                    URL generatedURL1 = generateURL( searchField.getText().toString(), KORSAKOV);
+                    asdf [0] = generatedURL;
+                    asdf [1] = generatedURL1;
+                    new VKQueryTask().execute(asdf);
 
                 }
             }
