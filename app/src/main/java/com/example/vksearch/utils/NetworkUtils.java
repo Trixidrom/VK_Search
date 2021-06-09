@@ -35,6 +35,7 @@ public class NetworkUtils {
             //токен с телефона
             //e837b5dbbbba08f82f002e75129531e6e1e693c09e3d06957fb4d08b387d6d8049f28da7b160df373fa46
             //ТТК
+            //searchString = "Беззубов";
             Uri buildUri = Uri.parse(API + METHOD)
                     .buildUpon()
                     .appendQueryParameter(COUNT, "1000")
@@ -42,7 +43,8 @@ public class NetworkUtils {
                     .appendQueryParameter(PARAMS, searchString)
                     .appendQueryParameter(FIELDS, "city")
                     .appendQueryParameter(VERSION, "5.131")
-                    .appendQueryParameter(TOKEN, "f1ba563ebebba76c216635928986c328a2075135fb5a4617c336c19ff5f71cef876035f1fc850334e9b1a")
+                    .appendQueryParameter(TOKEN,
+                            "3d01642100680530b108966d0afc59469da971c13ec86a4eb689fa76fd3d50705fe8b9933106f9c077917")
                     .build();
 
             URL url = null;

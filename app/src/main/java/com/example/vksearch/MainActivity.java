@@ -10,6 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.vksearch.serializeutils.Handler;
+import com.example.vksearch.serializeutils.JSONSerialize;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -40,7 +47,25 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String response) {
-            result.setText(response);
+            String str ="";
+            try {
+                //сократили респонс до нужного массива
+                JSONArray jsonResponseArray = new JSONObject(response).getJSONObject("response").getJSONArray("items");
+                
+                for(int i = 0; i<jsonResponseArray.length(); i++){
+                    JSONSerialize SerObj= new Handler(jsonResponseArray.getJSONObject(i)).getSerObj();
+                    str+= "Имя: " + SerObj.getFirstName() + "\n" +
+                            "Фамилия: " +SerObj.getLastName() + "\n" +
+                            "ID: " + SerObj.getId() + "\n" +
+                            "Город: " + SerObj.getCity() + "\n\n";
+                }
+
+                response = jsonResponseArray.toString();
+                
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            result.setText(str);
         }
     }
 
