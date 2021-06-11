@@ -38,4 +38,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.intellij:annotations:12.0'
 }

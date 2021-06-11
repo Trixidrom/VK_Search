@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/ll_main"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -17,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="пользователь"
-            android:textColor="#C1C1C1" />
+            android:textColor="#C1C1C1"
+            android:hint="@string/EditTextStart"/>
 
         <Button
             android:id="@+id/b_go"
@@ -27,7 +28,12 @@
             android:layout_weight="5"
             android:text="GO" />
     </LinearLayout>
-
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_width="45dp"
+        android:layout_height="45dp"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -35,8 +41,7 @@
         <TextView
             android:id="@+id/tv_result"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_height="wrap_content"/>
 
     </ScrollView>
 

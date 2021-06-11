@@ -2,12 +2,18 @@ package com.example.vksearch.utils;
 
 import android.net.Uri;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
+
+import com.example.vksearch.MainActivity;
+import com.example.vksearch.R;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class NetworkUtils {
@@ -31,11 +37,6 @@ public class NetworkUtils {
             //старый запрос
             //https://api.vk.com/method/users.search?count=1000&q=chumachenko&fields=city&city=167&v=5.131&access_token=39eb9663934d971862adff9d3a55cf3e79ababda19e648e584e47dbe17c7f025bf036daec558d2ca38eec
             //новый
-            //f1ba563ebebba76c216635928986c328a2075135fb5a4617c336c19ff5f71cef876035f1fc850334e9b1a
-            //токен с телефона
-            //e837b5dbbbba08f82f002e75129531e6e1e693c09e3d06957fb4d08b387d6d8049f28da7b160df373fa46
-            //ТТК
-            //searchString = "Беззубов";
             Uri buildUri = Uri.parse(API + METHOD)
                     .buildUpon()
                     .appendQueryParameter(COUNT, "1000")
@@ -44,14 +45,13 @@ public class NetworkUtils {
                     .appendQueryParameter(FIELDS, "city")
                     .appendQueryParameter(VERSION, "5.131")
                     .appendQueryParameter(TOKEN,
-                            "3d01642100680530b108966d0afc59469da971c13ec86a4eb689fa76fd3d50705fe8b9933106f9c077917")
+                            "fbcd883c37916bc8c789870ad0a8938b7583556969342206ed6d3bf4c33b062b143fc452d12f80ad2c9bb")
                     .build();
 
             URL url = null;
 
             try {
                 url = new URL(buildUri.toString());
-                //url = new URL("https://api.vk.com/method/users.get?user_ids=trix2006,highsense&v=5.131&access_token=8bdc1cdb8bdc1cdb8bdc1cdbf48ba412f488bdc8bdc1cdbeb689e3e6df7b004e0b8b490");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -75,9 +75,10 @@ public class NetworkUtils {
                 }else {
                     return null;
                 }
+            }catch (UnknownHostException e){
+                return null;
             }finally {
                 urlConnection.disconnect();//надо закрыть соединение, файнали выполняется в любом случае
-                //Log.d(TAG, url.toString());
             }
         }
 }
