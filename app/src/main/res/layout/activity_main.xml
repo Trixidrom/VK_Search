@@ -34,6 +34,13 @@
         android:visibility="gone"
         android:layout_width="45dp"
         android:layout_height="45dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.recyclerview.widget.RecyclerView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
