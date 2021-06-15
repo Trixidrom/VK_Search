@@ -1,6 +1,8 @@
 package com.example.vksearch;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +77,15 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             city = itemView.findViewById(R.id.tv_city);
             avatar = itemView.findViewById(R.id.iv_avatar);
 
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAbsoluteAdapterPosition();//надо проверить
+                    Intent browserIntent = new
+                            Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/id" + list.get(position)[2]));
+                    main.startActivity(browserIntent);
+                }
+            });
         }
 
         void bind(String arr[], Context main){
