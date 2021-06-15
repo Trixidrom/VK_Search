@@ -19,6 +19,22 @@ public class JSONSerialize {
     private String id;
     @SerializedName("city")
     private JsonObject city;
+    @SerializedName("bdate")
+    private String bdate;
+    @SerializedName("photo_50")
+    private String photo_50;
+
+    public String getBdate() {
+            if (bdate != null){
+                return bdate;
+            }else{
+                return "Скрыт";
+            }
+    }
+
+    public String getPhoto_50() {
+        return photo_50;
+    }
 
     public String getFirstName() {
         return firstName;

@@ -42,7 +42,7 @@ public class NetworkUtils {
                     .appendQueryParameter(COUNT, "1000")
                     .appendQueryParameter(CITY, city)
                     .appendQueryParameter(PARAMS, searchString)
-                    .appendQueryParameter(FIELDS, "city")
+                    .appendQueryParameter(FIELDS, "city,bdate,photo_50")
                     .appendQueryParameter(VERSION, "5.131")
                     .appendQueryParameter(TOKEN,
                             "fbcd883c37916bc8c789870ad0a8938b7583556969342206ed6d3bf4c33b062b143fc452d12f80ad2c9bb")

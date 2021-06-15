@@ -1,6 +1,8 @@
 package com.example.vksearch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -17,12 +19,14 @@ import android.widget.Toast;
 
 import com.example.vksearch.serializeutils.Handler;
 import com.example.vksearch.serializeutils.JSONSerialize;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,22 +37,32 @@ import static com.example.vksearch.utils.NetworkUtils.getResponseFromURL;
 public class MainActivity extends AppCompatActivity {
     private EditText searchField;
     private Button searchGo;
-    private TextView result;
     private ProgressBar loadingIndIndicator;
+
+    private RecyclerView numbersList;
+    private UsersAdapter usersAdapter;
 
     public static final String YS = "167";
     public static final String KORSAKOV = "6984";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         searchField = (EditText) findViewById(R.id.et_search_field);
         searchGo = findViewById(R.id.b_go);
-        result = findViewById(R.id.tv_result);
         loadingIndIndicator = findViewById(R.id.pb_loading);
+
+
+
+        numbersList = findViewById(R.id.rv_users);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);//создаем менеджер
+        numbersList.setLayoutManager(layoutManager);
+        numbersList.setHasFixedSize(true);//указали что знаем размер нашего списка.
+
+        //адаптер:
+
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -61,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 new VKQueryTask().execute(asdf);
             }
         };
-        searchField.setOnClickListener(onClickListener);
+        //searchField.setOnClickListener(onClickListener);
         searchGo.setOnClickListener(onClickListener);
     }
     class VKQueryTask extends AsyncTask<URL, Void, List<String>>{
@@ -79,13 +93,13 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     response.add(getResponseFromURL(urls[i]));
 
-                    //считаем количество пользователей в ответе.
-                    try {
-                        count1 += new JSONObject(response.get(i))
-                                .getJSONObject("response").getInt("count");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    //считаем количество пользователей в ответе. (это то число, которое есть в ответе, может быть не точным)
+//                    try {
+//                        count1 += new JSONObject(response.get(i))
+//                                .getJSONObject("response").getInt("count");
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -100,9 +114,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<String> response) {
+            int count2 = 0;
+            List<String[]> users = new ArrayList<>();
             loadingIndIndicator.setVisibility(View.GONE);
 
-            String str ="";
             for(int i = 0; i< response.size(); i++){
                 try {
 
@@ -112,23 +127,28 @@ public class MainActivity extends AppCompatActivity {
 
                     for(int f = 0; f<jsonResponseArray.length(); f++){
                         JSONSerialize SerObj= new Handler(jsonResponseArray.getJSONObject(f)).getSerObj();
-                        str+= "Имя: " + SerObj.getFirstName() + "\n" +
-                                "Фамилия: " +SerObj.getLastName() + "\n" +
-                                "ID: " + SerObj.getId() + "\n" +
-                                "Город: " + SerObj.getCity() + "\n\n";
+                        users.add(new String[]{SerObj.getFirstName(), SerObj.getLastName(),SerObj.getId(),SerObj.getBdate(),SerObj.getPhoto_50(),SerObj.getCity()});
+
+                        count2++;
                     }
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
 
-            if(count1==0){
+            }
+            Toast count = Toast.makeText(MainActivity.this, String.valueOf(count2), Toast.LENGTH_SHORT);
+            count.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 300);
+            count.show();
+
+            usersAdapter = new UsersAdapter(users.size(), users, MainActivity.this);
+            numbersList.setAdapter(usersAdapter);
+
+            if(count2==0){
                 Toast toast = Toast.makeText(MainActivity.this, R.string.ZeroCountSearchUsers, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 300); toast.show();
             }else {
-                result.setText(str);
             }
         }
     }
