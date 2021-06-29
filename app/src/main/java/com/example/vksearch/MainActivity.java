@@ -1,13 +1,18 @@
 package com.example.vksearch;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,6 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String YS = "167";
     public static final String KORSAKOV = "6984";
+    public SharedPreferences CitySettings;
+
+    public int countCity() {
+        //здесь считается количество городов для URL массива
+        int count=0;
+        CitySettings = getSharedPreferences("CitySettings", MODE_PRIVATE);
+        if (CitySettings.getBoolean("YS", true )) count++;
+        if (CitySettings.getBoolean("Korsakov", true )) count++;
+        return count;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         searchField = (EditText) findViewById(R.id.et_search_field);
         searchGo = findViewById(R.id.b_go);
         loadingIndIndicator = findViewById(R.id.pb_loading);
+
 
 
 
@@ -67,17 +83,51 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                URL[] asdf = new URL[2];
-                URL generatedURL = generateURL( searchField.getText().toString(), YS);
-                URL generatedURL1 = generateURL( searchField.getText().toString(), KORSAKOV);
-                asdf [0] = generatedURL;
-                asdf [1] = generatedURL1;
+                int i = 0;
+                CitySettings = getSharedPreferences("CitySettings", MODE_PRIVATE);
+
+                if (countCity()==0){
+                    Toast.makeText(MainActivity.this, "Не заданы города в City settings", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                URL[] asdf = new URL[countCity()];
+                if(CitySettings.getBoolean("YS", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), YS);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Korsakov", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), KORSAKOV);
+                    i++;
+                }
+
+
+
+
                 new VKQueryTask().execute(asdf);
             }
         };
         //searchField.setOnClickListener(onClickListener);
         searchGo.setOnClickListener(onClickListener);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case 0:
+                Intent intent = new Intent (MainActivity.this, SettingsCityActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, 0, 0, "City settings");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     class VKQueryTask extends AsyncTask<URL, Void, List<String>>{
         int count1;
         @Override
