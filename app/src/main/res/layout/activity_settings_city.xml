@@ -1,27 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".SettingsCityActivity">
 
-    <CheckBox
-        android:id="@+id/cb_ys"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Yuzhno Sakhalinsk" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <CheckBox
-        android:id="@+id/cb_korsakov"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Korsakov" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_weight="1"
+                android:text="Искать в:"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/cb_ys"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Южно-Сахалинск" />
+
+                <CheckBox
+                    android:id="@+id/cb_aleksandrovsksakhalinskii"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Александровск-Сахалинский" />
+
+                <CheckBox
+                    android:id="@+id/cb_aniva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Анива" />
+
+                <CheckBox
+                    android:id="@+id/cb_kholmsk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Холмск" />
+
+                <CheckBox
+                    android:id="@+id/cb_dolinsk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Долинск" />
+
+                <CheckBox
+                    android:id="@+id/cb_korsakov"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Корсаков" />
+
+                <CheckBox
+                    android:id="@+id/cb_makarov"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Макаров" />
+
+                <CheckBox
+                    android:id="@+id/cb_nevelsk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Невельск" />
+
+                <CheckBox
+                    android:id="@+id/cb_nogliki"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ноглики" />
+
+                <CheckBox
+                    android:id="@+id/cb_okha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Оха" />
+
+                <CheckBox
+                    android:id="@+id/cb_poronaisk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Поронайск" />
+
+                <CheckBox
+                    android:id="@+id/cb_smirnih"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Смирных" />
+
+                <CheckBox
+                    android:id="@+id/cb_tomari"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Томари" />
+
+                <CheckBox
+                    android:id="@+id/cb_tymovskoe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Тымовское" />
+
+                <CheckBox
+                    android:id="@+id/cb_uglegorsk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Углегорск" />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save" />
-</LinearLayout>
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

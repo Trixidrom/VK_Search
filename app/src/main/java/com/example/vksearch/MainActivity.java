@@ -1,10 +1,15 @@
 package com.example.vksearch;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -48,8 +53,24 @@ public class MainActivity extends AppCompatActivity {
     private UsersAdapter usersAdapter;
 
     public static final String YS = "167";
+    public static final String ANIVA = "332";
+    public static final String KHOLMSK = "695";
     public static final String KORSAKOV = "6984";
+    public static final String NEVELSK = "5157";
+    public static final String DOLINSK = "2145";
+    public static final String MAKAROV = "4597";
+    public static final String PORONAISK = "853";
+    public static final String OKHA = "18171";
+    public static final String TOMARI = "7395";
+    public static final String UGLEGORSK = "1154075";
+    public static final String TYMOVSKOE = "7648";
+    public static final String ALEKSANDROVSKSAKHALINSKII = "6128";
+    public static final String NOGLIKI = "5229";
+    public static final String SMIRNIH = "13285";
+
     public SharedPreferences CitySettings;
+    ActivityResultLauncher<Intent> actResLauncherAligment;
+    private int bday=0;
 
     public int countCity() {
         //здесь считается количество городов для URL массива
@@ -57,6 +78,19 @@ public class MainActivity extends AppCompatActivity {
         CitySettings = getSharedPreferences("CitySettings", MODE_PRIVATE);
         if (CitySettings.getBoolean("YS", true )) count++;
         if (CitySettings.getBoolean("Korsakov", true )) count++;
+        if (CitySettings.getBoolean("Kholmsk", true )) count++;
+        if (CitySettings.getBoolean("Nevelsk", true )) count++;
+        if (CitySettings.getBoolean("Aniva", true )) count++;
+        if (CitySettings.getBoolean("Dolinsk", true )) count++;
+        if (CitySettings.getBoolean("Makarov", true )) count++;
+        if (CitySettings.getBoolean("Poronaisk", true )) count++;
+        if (CitySettings.getBoolean("Okha", true )) count++;
+        if (CitySettings.getBoolean("Tomari", true )) count++;
+        if (CitySettings.getBoolean("Uglegorsk", true )) count++;
+        if (CitySettings.getBoolean("Tymovskoe", true )) count++;
+        if (CitySettings.getBoolean("AleksandrovskSakhalinskii", true )) count++;
+        if (CitySettings.getBoolean("Nogliki", true )) count++;
+        if (CitySettings.getBoolean("Smirnih", true )) count++;
         return count;
     }
 
@@ -77,7 +111,17 @@ public class MainActivity extends AppCompatActivity {
         numbersList.setLayoutManager(layoutManager);
         numbersList.setHasFixedSize(true);//указали что знаем размер нашего списка.
 
-        //адаптер:
+        actResLauncherAligment = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            bday = data.getIntExtra("bday", 0);
+                        }
+                    }
+                });
 
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -92,21 +136,71 @@ public class MainActivity extends AppCompatActivity {
                 }
                 URL[] asdf = new URL[countCity()];
                 if(CitySettings.getBoolean("YS", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), YS);
+                    asdf [i] = generateURL( searchField.getText().toString(), YS, bday);
                     i++;
                 }
                 if(CitySettings.getBoolean("Korsakov", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), KORSAKOV);
+                    asdf [i] = generateURL( searchField.getText().toString(), KORSAKOV, bday);
                     i++;
                 }
-
-
+                if(CitySettings.getBoolean("Kholmsk", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), KHOLMSK, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Nevelsk", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), NEVELSK, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Aniva", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), ANIVA, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Dolinsk", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), DOLINSK, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Makarov", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), MAKAROV, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Poronaisk", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), PORONAISK, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Okha", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), OKHA, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Tomari", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), TOMARI, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Uglegorsk", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), UGLEGORSK, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Tymovskoe", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), TYMOVSKOE, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("AleksandrovskSakhalinskii", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), ALEKSANDROVSKSAKHALINSKII, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Nogliki", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), NOGLIKI, bday);
+                    i++;
+                }
+                if(CitySettings.getBoolean("Smirnih", true )){
+                    asdf [i] = generateURL( searchField.getText().toString(), SMIRNIH, bday);
+                    i++;
+                }
 
 
                 new VKQueryTask().execute(asdf);
             }
         };
-        //searchField.setOnClickListener(onClickListener);
+
         searchGo.setOnClickListener(onClickListener);
     }
 
@@ -117,6 +211,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent (MainActivity.this, SettingsCityActivity.class);
                 startActivity(intent);
                 break;
+            case 1:
+                Intent intentSearch = new Intent (MainActivity.this, UsersSettingsActivity.class);
+                actResLauncherAligment.launch(intentSearch);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -124,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, 0, 0, "City settings");
+        menu.add(0, 1, 0, "Search settings");
         return super.onCreateOptionsMenu(menu);
     }
 
