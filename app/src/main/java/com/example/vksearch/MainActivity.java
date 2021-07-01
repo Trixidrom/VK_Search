@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     public SharedPreferences CitySettings;
     ActivityResultLauncher<Intent> actResLauncherAligment;
-    private int bday=0;
+    private int bday=0,bmonth=0, byear=0, ageFrom=0, ageTo=0;
 
     public int countCity() {
         //здесь считается количество городов для URL массива
@@ -103,26 +103,10 @@ public class MainActivity extends AppCompatActivity {
         searchGo = findViewById(R.id.b_go);
         loadingIndIndicator = findViewById(R.id.pb_loading);
 
-
-
-
         numbersList = findViewById(R.id.rv_users);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);//создаем менеджер
         numbersList.setLayoutManager(layoutManager);
         numbersList.setHasFixedSize(true);//указали что знаем размер нашего списка.
-
-        actResLauncherAligment = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getData();
-                            bday = data.getIntExtra("bday", 0);
-                        }
-                    }
-                });
-
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -136,63 +120,63 @@ public class MainActivity extends AppCompatActivity {
                 }
                 URL[] asdf = new URL[countCity()];
                 if(CitySettings.getBoolean("YS", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), YS, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), YS, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Korsakov", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), KORSAKOV, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), KORSAKOV, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Kholmsk", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), KHOLMSK, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), KHOLMSK, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Nevelsk", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), NEVELSK, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), NEVELSK, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Aniva", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), ANIVA, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), ANIVA, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Dolinsk", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), DOLINSK, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), DOLINSK, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Makarov", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), MAKAROV, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), MAKAROV, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Poronaisk", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), PORONAISK, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), PORONAISK, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Okha", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), OKHA, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), OKHA, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Tomari", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), TOMARI, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), TOMARI, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Uglegorsk", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), UGLEGORSK, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), UGLEGORSK, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Tymovskoe", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), TYMOVSKOE, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), TYMOVSKOE, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("AleksandrovskSakhalinskii", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), ALEKSANDROVSKSAKHALINSKII, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), ALEKSANDROVSKSAKHALINSKII, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Nogliki", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), NOGLIKI, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), NOGLIKI, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
                 if(CitySettings.getBoolean("Smirnih", true )){
-                    asdf [i] = generateURL( searchField.getText().toString(), SMIRNIH, bday);
+                    asdf [i] = generateURL( searchField.getText().toString(), SMIRNIH, ageFrom, ageTo, bday, bmonth, byear);
                     i++;
                 }
 
@@ -200,8 +184,26 @@ public class MainActivity extends AppCompatActivity {
                 new VKQueryTask().execute(asdf);
             }
         };
-
         searchGo.setOnClickListener(onClickListener);
+
+        actResLauncherAligment = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            bday = data.getIntExtra("bday", 0);
+                            bmonth = data.getIntExtra("bmonth", 0);
+                            byear = data.getIntExtra("byear", 0);
+                            ageFrom = data.getIntExtra("ageFrom", 0);
+                            ageTo = data.getIntExtra("ageTo", 0);
+                            if(searchField.getText().toString().equals(""))
+                                return;
+                            onClickListener.onClick(searchGo);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -241,15 +243,6 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i< urls.length; i++){
                 try {
                     response.add(getResponseFromURL(urls[i]));
-
-                    //считаем количество пользователей в ответе. (это то число, которое есть в ответе, может быть не точным)
-//                    try {
-//                        count1 += new JSONObject(response.get(i))
-//                                .getJSONObject("response").getInt("count");
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

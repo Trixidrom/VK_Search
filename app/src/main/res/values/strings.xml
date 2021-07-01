@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VK Search</string>
+    <string name="app_name">VK Search in Sakhalin</string>
     <string name="ZeroCountSearchUsers">Пользователи не найдены</string>
     <string name="NoResponsefromServer">Нет ответа от сервера Вконтакте</string>
     <string name="EditTextStart">пользователь</string>
